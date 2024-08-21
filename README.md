@@ -16,16 +16,16 @@ cd /opt/bypy
 ### 登陆
 
 ```bash
-docker run -it --rm \
-	-v /opt:/apps \
-	-v ./data/:/root/.bypy jockerdragon/bypy:latest ash bypy info
+docker run -it --rm  \
+    -v ./data/:/root/.bypy \
+    jockerdragon/bypy:latest /usr/local/bin/bypy info
 ```
 
 ### 同步
 
 ```bash
 docker run -it -d \
-		-v /你的同步目录:/apps \
+    -v /你的同步目录:/apps \
     -v ./data/:/root/.bypy \
     -e "CRON_SCHEDULE=0 0 * * *" ## 可选项，默认每天0点同步 \
     --name baidunetdisk-sync \
