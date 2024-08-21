@@ -33,3 +33,5 @@ if ! check_cron_job_exists "${CRON_SCHEDULE} .*"; then
     echo "${CRON_SCHEDULE} /bin/sh -c 'DIR=/apps TAR_FILE=/apps-$(date +%Y%m%d%H%M).tar.gz tar -czf \${TAR_FILE}  \${DIR} . && bypy -v upload \${TAR_FILE} backup/ && rm \${TAR_FILE}' >> /proc/1/fd/1 2>&1"
     ) | crontab -
 fi
+
+exec ash
