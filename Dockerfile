@@ -9,6 +9,6 @@ RUN chmod +x /entrypoint.sh
 
 VOLUME /apps
 
-ENTRYPOINT ""
+ENTRYPOINT sh
 
 CMD ["/entrypoint.sh"]
