@@ -33,6 +33,6 @@ jobs:
             DOCKER_TAG=$(echo ${GITHUB_REF#refs/tags/})
             docker build --push --tag ${{ secrets.DOCKER_USERNAME }}/bypy:latest .
           else
-            DOCKER_TAG=${{ github.event.pull_request.number }}
+            DOCKER_TAG=pr-${{ github.event.pull_request.number }}
           fi
           docker build --push --tag ${{ secrets.DOCKER_USERNAME }}/bypy:$DOCKER_TAG .
