@@ -2,7 +2,7 @@
 
 > 这是一个自动化周期性备份数据到百度网盘的命令行程序的 Docker 镜像。使用该镜像可以轻松地将数据备份到百度网盘。
 
-## 使用示例
+## Docker示例
 
 ### 创建工作目录
 
@@ -39,6 +39,57 @@ docker run -it -d \
     jockerdragon/bypy:latest
 ```
 
+## docker compose 示例
+
+### 模板文件
+
+```yaml
+# cat docker-compose.yaml 
+version: '3.8'
+
+services:
+  frps:
+    container_name: jockerdragon-frps
+    image: snowdreamtech/frps:0.61.0
+    network_mode: host
+    restart: always
+    volumes:
+      - ./frps.ini:/etc/frp/frps.toml
+
+  bypy:
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./:/apps
+      - ./data_bypy:/root/.bypy
+    environment:
+      - PREFIX=frps
+    container_name: baidunetdisk-sync-frps
+    restart: always
+    image: hub.geekery.cn/jockerdragon/bypy:latest
+
+```
+
+### 启动工作容器
+
+> 这里以frps作为工作容器
+
+```bash
+docker compose up -d frps
+```
+
+### 登录
+
+```bash
+docker compose run bypy /usr/local/bin/bypy info
+```
+
+### 启动同步容器
+
+```bash
+docker compose up -d bypy
+```
+
 ## 参数说明
 
 ### 环境变量
@@ -51,7 +102,6 @@ docker run -it -d \
 | `PREFIX`        | 定义 tar 文件的前缀。                                        | `backup_`   |
 
 ### 举例命令
-
 
 ```bash
 docker run -it -d \
