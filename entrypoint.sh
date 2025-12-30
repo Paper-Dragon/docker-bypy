@@ -8,7 +8,7 @@ TAR_FILE=/${PREFIX:-"app"}-$(date +%Y%m%d%H%M).tar.gz
 tar -cvzf ${TAR_FILE}  ${DIR}
 
 # Sync upload to cloud storage
-bypy -v upload ${TAR_FILE} backup/
+bypy -v --slice 2040M upload ${TAR_FILE} backup/
 
 # Cleanup local tar file
 rm ${TAR_FILE}
@@ -30,7 +30,7 @@ check_cron_job_exists() {
 if ! check_cron_job_exists "bypy"; then
     (
     crontab -l
-    echo "${CRON_SCHEDULE} /bin/sh -c 'export DIR=/apps && export TAR_FILE=/\${PREFIX:-"app"}-\$(date +%Y%m%d%H%M).tar.gz && tar -czvf \${TAR_FILE}  \${DIR} . && bypy -v upload \${TAR_FILE} backup/ && rm \${TAR_FILE}' >> /proc/1/fd/1 2>&1"
+    echo "${CRON_SCHEDULE} /bin/sh -c 'export DIR=/apps && export TAR_FILE=/\${PREFIX:-"app"}-\$(date +%Y%m%d%H%M).tar.gz && tar -czvf \${TAR_FILE}  \${DIR} . && bypy -v --slice 2040M upload \${TAR_FILE} backup/ && rm \${TAR_FILE}' >> /proc/1/fd/1 2>&1"
     ) | crontab -
 fi
 
